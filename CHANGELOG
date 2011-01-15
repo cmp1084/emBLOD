@@ -1,0 +1,93 @@
+/*****************************************************************************
+                             ___________    ____________
+    __________________  ____ \  _   \   \   \        \  \_
+    \    __    \      \/    \/  7  _/   /   /  __    /    \_
+    /     7    /            /   _   \  /___/    7   /  _    \_
+   /_     ____/_    /\_/   /    7   /     /_       /   7      \
+     \________/ \__/  /___/________/\______/\_____/___________/
+                                            [asmegir.hopto.org]
+             e       m       B       L       O       D
+
+    Copyright 2011 Marcus Jansson <mjansson256@yahoo.se>
+
+    This file is part of emBLOD - the embedded bootloader
+
+    emBLOD is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    emBLOD is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with emBLOD.  If not, see <http://www.gnu.org/licenses/>.
+*****************************************************************************/
+
+emBLOD Changelog
+--------------------------
+Version 0.1.4
+20110114
+Changed name of the project, previously eLuaBLOD, now emBLOD
+bootparameters added.
+Removed ROSA kernel ballast.
+
+
+Version 0.1
+eLudaBLOD application based on ROSA, but not really using the RTOS.
+Added SDHC card capability and FAT filesystem to be able to load
+eLua firmware from SDHC card.
+
+Version 0.0.6.1
+20101213
+Added DIP204 LCD display routines.
+
+Version 0.0.6
+20101208
+Added parameters to the tasks!
+Added spi
+Added EVK1100 AT45DB642 data flash support
+Optimized assembler task switch routines.
+Changed the usartx_options struct initializations.
+
+
+Version 0.0.5.1.2.0.3.1
+20101128
+Made some static functions and variables. Added addToScheduler() etc functions in rosa_scheduler.c.
+Made build directory, which contain all the .o after a compile. The ROSA src directory is now untouched by a compile.
+
+Version 0.0.5
+20101124
+Christmas comes early!
+Fixed the contextSwitchFromISR to cope with compiler optimization,
+now -O0, 1, 2, 3 and -Os work.
+
+Verison 0.0.4
+20101112
+Moved some driver defines into rosa_config.h for better consolidation
+of user defines.
+Added:
+ /src/system/semaphore.c	- semaphore functions
+ /src/system/list.c			- linked list functions
+ /src/system/queue.c		- queue functions
+ /src/kernel/rosa_systick.c	- system tick functions
+ /src/kernel/rosa_dyn		- dynamic tasks
+and src/include/* for these files.
+
+Version 0.0.3
+20101015
+Marcus Jansson <mjansson256@yahoo.se>
+Rearranged and removed code from the kernel.
+
+Version 0.0.2
+20101004
+Marcus Jansson <mjansson256@yahoo.se>
+Minor changes, bugfix.
+
+
+Version 0.0.1
+20100918
+Marcus Jansson <mjansson256@yahoo.se>
+First version of ROSA.

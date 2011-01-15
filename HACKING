@@ -1,0 +1,95 @@
+                             ___________    ____________
+    __________________  ____ \  _   \   \   \        \  \_
+    \    __    \      \/    \/  7  _/   /   /  __    /    \_
+    /     7    /            /   _   \  /___/    7   /  _    \_
+   /_     ____/_    /\_/   /    7   /     /_       /   7      \
+     \________/ \__/  /___/________/\______/\_____/___________/
+                                            [asmegir.hopto.org]
+             e       m       B       L       O       D
+
+Hacking
+--------
+
+You should try to follow the following basic guidelines:
+
+Indentation
+------------
+
+This source is coded using tabs for indentation. The nominal width is 4 spaces.
+However, you are encouraged to use spaces for alignment, as in the following
+example:
+
+	if(foo(this, that, there)
+	    && bar == baz) {
+		dostuff();
+	}
+
+Notice the spaces before the second line of the if() condition, after a single
+tab. This lets people use their preferred tab width setting while maintaining
+alignment.
+
+Do not, however, use spaces for indentation. Always use tabs.
+
+Width
+------
+
+80 characters is a good mark where you should begin to consider breaking into
+multiple lines. A few 100 or 120-char lines are fine, but don't go longer than
+that.
+
+if / for / while / etc.
+------------------------
+
+Put the opening brace on the same line, like this:
+
+	if(foo) {
+		...
+	} else if (bar) {
+		...
+	} else {
+		...
+	}
+
+Or don't use braces for single-line bodies, like this:
+
+	if(foo)
+		...
+	else if(bar)
+		...
+	else
+		...
+
+Exceptions are allowed when the if() condition spans multiple lines and putting
+the brace on its own line looks better by visually separating the condition from
+the body.
+
+Functions
+----------
+
+Functions should have the opening brace on the next line, like this:
+
+void foo(int a_thing, int something_else)
+{
+	...
+}
+
+No-args functions should be (void), and function arguments should be separated
+with a space after the comma, like this:
+
+void baz(void)
+{
+	foo(bluh, blah);
+}
+
+Try to avoid having excessively long function names (abbreviating is fine) and
+don't make multiple functions that do essentially the same thing (and certainly
+don't copy and paste the code). Make the function names logical. Follow the
+peripherialThingDoes(), e.g. spiInterruptEnable(), way of naming functions.
+User API functions should be prefixed ROSA_, e.g. ROSA_tcbNameGet()
+
+
+Whitespace
+-----------
+
+Avoid trailing whitespace. No lines should end in a tab or a space. Optionally keep a
+newline (blank line) at the end of each file.
