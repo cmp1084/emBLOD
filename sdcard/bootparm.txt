@@ -1,4 +1,4 @@
-###############################################################################
+ ###############################################################################
 #
 #                             ___________    ____________
 #    __________________  ____ \  _   \   \   \        \  \_
@@ -10,29 +10,29 @@
 #             e       m       B       L       O       D
 #
 #
-# This is a bootparm.txt file for eLuaBLOD
+# This is a bootparm.txt file for emBLOD
 #
 # Note:
 # Filenames must be in 8.3 format.
 #
 # The filename for this parameter file must also be 8.3 maximum (bootparm.txt).
 # The filename for this file is defined when compiling the bootloader,
-# see the boot parameter section in: BLOD/src/blod_config.h
+# see the boot parameter section in: BLOD/src/emblod_config.h
 #
 # If the bootfile parameter can not be found on the SD-card a default file is
-# loaded. The default filename is set in BLOD/src/blod_config.h
+# loaded. The default filename is set in BLOD/src/emblod_config.h
 #
 ###############################################################################
 
 #This bootfile is read from SD-card.
-bootfile = emu06015.bin
+ bootfile = emu06015.bin
 
 #This banner file is optional. If it exist, it will be shown on serial terminal
 banner = banner2.txt
 
 #bootdelay is given in seconds, this is a delay between loading and actually
 #starting execution of the loaded program.
-bootdelay = 2
+bootdelay = 0
 
 #DONT USE YET. #Default baudrate is 115200
 #DONT USE YET. baudrate = 57600

@@ -35,9 +35,12 @@
 #include "drivers/usart.h"
 #include "ff.h"
 
-#define BUFMAXLEN 128
-#define EOF -1
+#define BUFMAXLEN 512
+//~ #define EOF -1
+//~ #define ERR -2
 #define MAXSTRLEN 0x80
+
+enum { ERR = -2, EOF = -1 };
 
 /********************************************************
  * bootparam_t

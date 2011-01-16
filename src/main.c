@@ -67,7 +67,7 @@ int main(void)
 	usartWriteLine(USART0, version);
 	ledInit();
 
-	usartWriteLine(USART0, "Getting bootparm.txt...");
+	usartWriteLine(USART0, "Getting bootparm.txt...\n");
 	//Load boot parameters from SD-card
 	bootparam = bootparamLoad("bootparm.txt");
 	done();

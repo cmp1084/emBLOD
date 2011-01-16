@@ -29,8 +29,10 @@
 
 #include "app/emblod.h"
 
-BYTE chreadpos = 0;
-static UINT br = 0;
+//~ __attribute__((section(".data")))
+unsigned int chreadpos = 0;
+__attribute__((section(".data")))
+UINT br = 0;
 
 void warning(const char * msg)
 {
@@ -44,72 +46,96 @@ void error(const char * err)
 	while(1);
 }
 
-//Check end of buffer
-//~ __attribute__((noinline))
-int b_eof(void)
-{
-	return chreadpos == br;
-}
+/********************************************************
+ * chread
+ *
+ * In:
+ * char * ch
+ * FIL ** fp
+ * BYTE ** buf
+ *
+ * Out:
+ * EOF on end of file
+ * ERR on error
+ * OK on OK
+ *
+ ********************************************************/
 
-BYTE chread(FIL ** fp, BYTE ** buf)
+int chread(unsigned char ** ch, FIL ** fp, BYTE ** buf)
 {
-	BYTE ch;
-	FRESULT rc;
-
+	unsigned int rc;
 	if(chreadpos == 0) {
-		rc = f_read(*fp, *buf, BUFMAXLEN, &br); //TODO: We dont take care of errors here.
+		rc = f_read(*fp, *buf, BUFMAXLEN, &br);
+		if(br == 0) {
+			return EOF;
+		}
+		if(rc != FR_OK) {
+			return ERR;
+		}
 	}
-	ch = *(*buf+chreadpos);
+	**ch = *(*buf+chreadpos);
 	chreadpos++;
+
 	if(chreadpos == BUFMAXLEN) {
 		chreadpos = 0;
 	}
-	return ch;
+	if(chreadpos == br)
+			return EOF;
+	return OK;
 }
 
-void readawayline(FIL ** fp, BYTE ** buf)
+int chreadhelper(unsigned char * ch, FIL ** fp, BYTE **buf)
 {
-	BYTE ch;
-	//Read away this line
-	do {
-		ch = chread(fp, buf);
-		if(ch == '\n') break;
-	} while(!b_eof());
+	return chread(&ch, fp, buf);
 }
 
-BYTE readawayspace(FIL ** fp, BYTE ** buf)
+int readawayline(unsigned char * ch, FIL ** fp, BYTE **buf)
 {
-	BYTE ch;
-	//Read away space
+	int err;
 	do {
-		ch = chread(fp, buf);
-	} while(((ch == ' ') || (ch == '\t') || (ch == '\n')) && !b_eof() );
-	return ch;
+		err = chread(&ch, fp, buf);
+		if(err != OK) {
+			return err;
+		}
+	} while((*ch != '\n'));
+	return OK;
 }
 
-/********************************************************
- * readparam
- *
- * Comment:
- * Read a parameter or a parameter value from a file.
- *
- ********************************************************/
+int readawayspace(unsigned char * ch, FIL ** fp, BYTE ** buf)
+{
+	int err;
+	do {
+		err = chread(&ch, fp, buf);
+		if(err != OK) {
+			return err;
+		}
+	} while((*ch == ' ') || (*ch == '\t') || (*ch == '\n'));
+	return OK;
+}
+
+
 int readparam(char * str, FIL * fp, BYTE * buf)
 {
-	BYTE ch;
+	unsigned char ch;
+	int err;
 	int i = 0;
 
-
 	//Read away any commented line
-	ch = readawayspace(&fp, &buf);
-	while(ch == '#' && !b_eof()) {
-		readawayline(&fp, &buf);
-		ch = readawayspace(&fp, &buf);
+	err = readawayspace(&ch, &fp, &buf);
+	while((ch == '#') && (err == OK)) {
+		err = readawayline(&ch, &fp, &buf);
+		if(err != OK) {
+			return err;
+		}
+		err = readawayspace(&ch, &fp, &buf);
+		if(err != OK) {
+			return err;
+		}
 	}
 	//Get the parameter/value
-	while(!b_eof()) {
+	while(1) {
 		//End of parameter/value?
-		if((ch == '\n') || (ch == '=')) {
+		if((ch == '\n') || (ch == '=')) {	//TODO: Add || (ch == ' ')
 			str[i] = '\0';
 			return OK;
 		}
@@ -122,10 +148,15 @@ int readparam(char * str, FIL * fp, BYTE * buf)
 				}
 			}
 		}
-		ch = chread(&fp, &buf);
+
+		err = chreadhelper(&ch, &fp, &buf);
+		if(err != OK) {
+			return err;
+		}
 	}
 	return EOF;
 }
+
 
 
 /********************************************************
@@ -185,6 +216,7 @@ int hexdecstrtoi(char * str)
  ********************************************************/
 bootparam_t bootparamLoad(char * filename)
 {
+	int bootparamsfound = 0;
 	FIL file_bootparam;
 	FATFS fatfs_bootparam;           //Filesystem object
 	BYTE buff_bootparam[BUFMAXLEN];
@@ -225,34 +257,42 @@ bootparam_t bootparamLoad(char * filename)
 
 		if(strncmp(param, "baudrate", MAXSTRLEN) == 0) {
 			bootparam.baudrate = hexdecstrtoi(value);
+			bootparamsfound++;
 		}
 		else
 		if(strncmp(param, "bootdelay", MAXSTRLEN) == 0) {
 			bootparam.bootdelay = hexdecstrtoi(value);
+			bootparamsfound++;
 		}
 		else
 		if(strncmp(param, "bootfile", MAXSTRLEN) == 0) {
 			strncpy(bootparam.bootfile, value, MAXSTRLEN);
+			bootparamsfound++;
 		}
 		else
 		if(strncmp(param, "banner", MAXSTRLEN) == 0) {
 			strncpy(bootparam.banner, value, MAXSTRLEN);
+			bootparamsfound++;
 		}
 		else
 		if(strncmp(param, "fcpu", MAXSTRLEN) == 0) {
 			bootparam.fcpu = hexdecstrtoi(value);
+			bootparamsfound++;
 		}
 		else
 		if(strncmp(param, "fpba", MAXSTRLEN) == 0) {
 			bootparam.fpba = hexdecstrtoi(value);
+			bootparamsfound++;
 		}
 		else
 		if(strncmp(param, "loadaddr", MAXSTRLEN) == 0) {
 			bootparam.loadaddr = hexdecstrtoi(value);
+			bootparamsfound++;
 		}
 		else
 		if(strncmp(param, "bootaddr", MAXSTRLEN) == 0) {
 			bootparam.bootaddr = hexdecstrtoi(value);
+			bootparamsfound++;
 		}
 		else {
 			usartWriteLine(USART0, "\nUnknown parameter: ");
@@ -260,8 +300,17 @@ bootparam_t bootparamLoad(char * filename)
 			usartWriteLine(USART0, " = ");
 			usartWriteLine(USART0, value);
 			usartWriteLine(USART0, "\n");
+			while(1);
+			 //This is evil, should not be done! Rework
 		}
 	}
+
+	if(bootparamsfound == 0) {
+		usartWriteLine(USART0, "\nWarning no boot parameters found");
+	}
+	usartWriteLine(USART0, "\nbootparamsfound: ");
+	usartWriteValue(USART0, bootparamsfound);
+	usartWriteLine(USART0, "\n");
 
 	//TODO: Remove debug output
 	usartWriteLine(USART0, "\nbaudrate: ");
@@ -286,6 +335,10 @@ bootparam_t bootparamLoad(char * filename)
 	usartWriteLine(USART0, "\nbootaddr: ");
 	usartWriteValue(USART0, bootparam.bootaddr);
 	usartWriteLine(USART0, "\n");
+
+
+
+
 	f_close(&file_bootparam);
 	return bootparam;
 }
