@@ -263,6 +263,7 @@ $(BUILDDIR)/$(DRIVERSDIR)/sdrabmc.o: $(DRIVERSDIR)/sdramc.c
 	$(TEXTPOSTCOMPILE)
 
 $(BINARY): ./$(PROGRAM).elf
+	@$(TEST) -d $(BINDIR) || $(MKDIR) -p $(BINDIR)
 	$(OBJCOPY) -O binary $(ELF) $(BINARY)
 
 $(ELF): $(OBJ)

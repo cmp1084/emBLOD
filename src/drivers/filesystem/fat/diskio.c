@@ -68,10 +68,10 @@ DSTATUS disk_initialize(BYTE Drive)
 
 	i = sdhcInit();
 	drive_status[Drive] = i;
-	spiConfigStruct.spck = FPBA;	//Final SD-card SPI speed	//TODO: Get actual speed from card
-	spiSetup(SD_SPI, &spiConfigStruct, &spiPinConfigStruct);
-	spiSetMode(SD_SPI, &spiConfigStruct);
-	spiEnable(SD_SPI);				//TODO: Remove when tested.
+	//spiConfigStruct.spck = FPBA;	//Final SD-card SPI speed	//TODO: Get actual speed from card
+	//spiSetup(SD_SPI, &spiConfigStruct, &spiPinConfigStruct);
+	//spiSetMode(SD_SPI, &spiConfigStruct);
+	//spiEnable(SD_SPI);				//TODO: Remove when tested.
 	return 0;
 }
 

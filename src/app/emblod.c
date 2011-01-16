@@ -215,6 +215,14 @@ bootparam_t bootparamLoad(char * filename)
 	while(readparam(param, &file_bootparam, buff_bootparam) == OK) {
 		if(readparam(value, &file_bootparam, buff_bootparam) != OK) break;
 
+		//~ Debug TODO: remove
+		usartWriteLine(USART0, " -> ");
+		usartWriteLine(USART0, param);
+		usartWriteLine(USART0, " = ");
+		usartWriteLine(USART0, value);
+		usartWriteLine(USART0, " <- ");
+		usartWriteLine(USART0, "\n");
+
 		if(strncmp(param, "baudrate", MAXSTRLEN) == 0) {
 			bootparam.baudrate = hexdecstrtoi(value);
 		}
@@ -255,6 +263,29 @@ bootparam_t bootparamLoad(char * filename)
 		}
 	}
 
+	//TODO: Remove debug output
+	usartWriteLine(USART0, "\nbaudrate: ");
+	usartWriteValue(USART0, bootparam.baudrate);
+	//~ //~
+	usartWriteLine(USART0, "\nbootdelay: ");
+	usartWriteValue(USART0, bootparam.bootdelay);
+	//~ //~
+	usartWriteLine(USART0, "\nbootfile: ");
+	usartWriteLine(USART0, bootparam.bootfile);
+	//~ //~
+	usartWriteLine(USART0, "\nbanner: ");
+	usartWriteLine(USART0, bootparam.banner);
+	//~ //~
+	usartWriteLine(USART0, "\nfcpu: ");
+	usartWriteValue(USART0, bootparam.fcpu);
+	//~ //~
+	usartWriteLine(USART0, "\nloadaddr: ");
+	usartWriteValue(USART0, bootparam.loadaddr);
+	//~ //~
+	//~ //~
+	usartWriteLine(USART0, "\nbootaddr: ");
+	usartWriteValue(USART0, bootparam.bootaddr);
+	usartWriteLine(USART0, "\n");
 	f_close(&file_bootparam);
 	return bootparam;
 }

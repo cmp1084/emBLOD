@@ -25,21 +25,20 @@
 ###############################################################################
 
 #This bootfile is read from SD-card.
-bootfile = elua.bin
+bootfile = emu06015.bin
 
 #This banner file is optional. If it exist, it will be shown on serial terminal
-banner = banner.txt
+banner = banner2.txt
 
 #bootdelay is given in seconds, this is a delay between loading and actually
 #starting execution of the loaded program.
 bootdelay = 2
 
-#Default baudrate is 115200
-baudrate = 57600
-
-#The frequency of the CPU and PBA
-fcpu = 60000000
-fpba = 15000000
+#DONT USE YET. #Default baudrate is 115200
+#DONT USE YET. baudrate = 57600
+#DONT USE YET. #The frequency of the CPU and PBA
+#DONT USE YET. #fcpu = 60000000
+#DONT USE YET. #fpba = 15000000
 
 #Load and boot address
 loadaddr = 0xd0000000

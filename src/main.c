@@ -44,8 +44,14 @@
 //Include application
 #include "app/emblod.h"
 
-#define VERSION "0.1.4"
-const char version[] = "\n\nm32BLOD " VERSION " (" __DATE__ ")\n";
+//TODO ♥
+#define VERSION "0.1.5"
+const char version[] = "\n\nemBLOD " VERSION " (" __DATE__ ")\n";
+
+void done(void)
+{
+	usartWriteLine(USART0, "Done\n");
+}
 
 /*************************************************************
  * Main function
@@ -57,27 +63,37 @@ int main(void)
 
 	//Initial initialisation
 	pmClkInit(FCPU, FPBA);
-	usartInit(USART0, &usart0_options, FPBA);    //Serial communication
+	usartInit(USART0, &usart0_options, FPBA);    //Init serial communication
+	usartWriteLine(USART0, version);
 	ledInit();
 
+	usartWriteLine(USART0, "Getting bootparm.txt...");
 	//Load boot parameters from SD-card
 	bootparam = bootparamLoad("bootparm.txt");
+	done();
 
 	//Second init according to boot parameters
 	//pmClkReInit(bootparam.fcpu, bootparam.fpba);
+	usartWriteLine(USART0, "Setting requested FPBA, reinit USART...");
 	usartInit(USART0, &usart0_options, bootparam.fpba);
-	sdramInit();
+	done();
 
-	usartWriteLine(USART0, version); //TODO ♥
+	usartWriteLine(USART0, "Init SDRAM...");
+	sdramInit();
+	done();
+
 	spiReset(&AVR32_SPI1);
 
 	//Optional loading a banner from SD-card and display on terminal.
+	usartWriteLine(USART0, "Loading banner...");
 	banner(&bootparam);
+	done();
 
 	//Boot file from SD-card, according to the bootparam.txt that should exist
 	//on the SD-card. Otherwise default settings will be used.
 	//If the boot is successful we (probably) never come back here.
 	//If the boot is unsuccessful we come back here.
+	usartWriteLine(USART0, "Loading bootfile, wait at least 15 sec...");
 	err = boot(&bootparam);
 
 	if(err) {
