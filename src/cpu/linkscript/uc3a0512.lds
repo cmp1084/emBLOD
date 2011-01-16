@@ -43,6 +43,9 @@
 /*
  * Changelog:
  * -----------
+ * 20110116 Marcus Jansson <mjansson256@yahoo.se>:
+ * Updated the script for DFU
+ *
  * 20100920 Marcus Jansson <mjansson256@yahoo.se>:
  * Minor modifications for ROSA.
  *
@@ -56,7 +59,7 @@ ENTRY(_start)
 
 MEMORY
 {
-  FLASH (rxai!w) : ORIGIN = 0x80000000, LENGTH = 0x00080000
+  FLASH (rxai!w) : ORIGIN = 0x80002000, LENGTH = 0x00080000 - 0x2000
   INTRAM (wxa!ri) : ORIGIN = 0x00000004, LENGTH = 0x0000FFFC
   USERPAGE : ORIGIN = 0x80800000, LENGTH = 0x00000200
 }
