@@ -455,8 +455,9 @@ int boot(bootparam_t * bootparam)
 	//Reset used peripherials before turning control over to the loaded program.
 	spiReset(&AVR32_SPI1);
 	usartReset(USART0);
+	//gpioPartlyReset(NOT_SDRAM_PINS);
 
-	//~ interruptDisable();	//It is never turned on.
+	interruptDisable();	//It is never turned on.
 	asm("icall %0" : : "r"(bootparam->bootaddr));
 	return 0;
 }

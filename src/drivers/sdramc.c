@@ -147,7 +147,8 @@ void sdramPurge(void)
 	}
 }
 
-unsigned long sdramInit(unsigned int fcpu)
+
+volatile unsigned long sdramInit(unsigned int fcpu)
 {
 	//~ volatile avr32_hmatrix_t * hmatrix = (void *) 0xfffe1000;
 	//~ volatile avr32_sdramc_t * sdramc = (void *) 0xfffe2000;
@@ -319,6 +320,6 @@ unsigned long sdramInit(unsigned int fcpu)
 		//~ .bank_bits = 2,
 		sdram_size = 1 << (13 + 9 + 2 + 1);    //row_bits + col_bits_bank_bits + 1
 
-	sdramPurge();	//TODO: Remove, but keep as long as possible
+	//~ sdramPurge();	//TODO: Remove, but keep as long as possible
 	return sdram_size;
 }
