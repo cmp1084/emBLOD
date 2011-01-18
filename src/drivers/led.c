@@ -74,7 +74,12 @@ void ledInit(void)
  * 	Nothing
  *
  *********************************************************/
+#if BOARD == MIZAR32
+void ledOn(int lednr) { gpioSet(lednr); }
+#endif
+#if BOARD == EVK1100
 void ledOn(int lednr) { gpioClear(lednr); }
+#endif
 
 
 /**********************************************************
@@ -87,7 +92,12 @@ void ledOn(int lednr) { gpioClear(lednr); }
  * 	Nothing
  *
  *********************************************************/
+#if BOARD == MIZAR32
+void ledOff(int lednr) { gpioClear(lednr); }
+#endif
+#if BOARD == EVK1100
 void ledOff(int lednr) { gpioSet(lednr); }
+#endif
 
 
 /**********************************************************

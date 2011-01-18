@@ -1,3 +1,6 @@
 
 20110116
-Rereverse ledOn()/ledOff() for Mizar32 vs. EVK1100 compile.
+Reverse ledOn()/ledOff() for Mizar32 vs. EVK1100 compile.
+
+20110110
+Ethernet boot. tftp

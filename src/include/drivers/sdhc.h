@@ -33,6 +33,17 @@
 #include "drivers/filesystem/fat/diskio.h"
 #include "drivers/spi.h"
 #include "drivers/led.h"
+#include "emblod_config.h"
+
+#if (BOARD == MIZAR32)
+#define SPI_ACTIVITY_LED LED0_GPIO    //This is AVR32_GPIO_PB29
+#endif
+
+#if (BOARD == EVK1100)
+#define SPI_ACTIVITY_LED LED2_GPIO    //This is AVR32_GPIO_PB29
+#endif
+//We dont toggle any gpio's on custom boards
+
 
 extern unsigned char sdhcBuf[512+16];
 extern unsigned char * sdhcSectorBuf;

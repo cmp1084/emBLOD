@@ -67,19 +67,20 @@ int main(void)
 	usartWriteLine(USART0, version);
 	ledInit();
 
-	usartWriteLine(USART0, "Getting bootparm.txt...\n");
+	usartWriteLine(USART0, "Preinit done.\nGetting bootparm.txt...\n");
+
 	//Load boot parameters from SD-card
 	bootparam = bootparamLoad("bootparm.txt");
 	done();
 
 	//Second init according to boot parameters
 	//pmClkReInit(bootparam.fcpu, bootparam.fpba);
-	usartWriteLine(USART0, "Setting requested FPBA, reinit USART...");
-	usartInit(USART0, &usart0_options, bootparam.fpba);
+	usartWriteLine(USART0, "reinit USART");
+	usartSetBaudrate(USART0, bootparam.baudrate, bootparam.fpba);
 	done();
 
 	usartWriteLine(USART0, "Init SDRAM...");
-	sdramInit();
+	sdramInit(bootparam.fcpu);
 	done();
 
 	spiReset(&AVR32_SPI1);

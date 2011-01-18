@@ -33,6 +33,12 @@
 #include <avr32/io.h>
 #include "drivers/debug.h"
 
+#if BOARD != MIZAR32
+	#if BOARD != EVK1100
+		#error Unknown BOARD, I can not compile.
+	#endif
+#endif
+
 /***********************************************************
  * Boot parameters
  *
@@ -41,8 +47,8 @@
  * Legal parameters are:
  * bootfile [ = name]
  * bootdelay [ = seconds]
- * fcpu [ = Hz]
- * fpba [ = Hz]
+ * NOT YET fcpu [ = Hz]
+ * NOT YET fpba [ = Hz]
  * loadaddr [ = memory address to load the binary to]
  * bootaddr [ = memory address to start execute the binary from] *
  *
@@ -57,13 +63,13 @@
 #define DEFAULT_BOOTPARAMETER_FILE "bootparm.txt"
 #define DEFAULT_AUTORUN_FILE "autorun.bin"
 #define DEFAULT_AUTOBANNER_FILE "banner.txt"
-#define DEFAULT_BAUDRATE 115200
 #define DEFAULT_BOOTDELAY 0
 #define DEFAULT_FCPU 60000000
 #define DEFAULT_FPBA 15000000
 #define DEFAULT_LOADADDR 0xd0000000
 #define DEFAULT_BOOTADDR 0xd0000000
 
+//Config USART output? see further down.
 
 /***********************************************************
  * "Nice-to-have" defines
@@ -106,9 +112,6 @@
 //Valid values are DEBUGLEVEL0-DEBUGLEVEL3
 #define DEBUGLEVEL DEBUGLEVEL1
 
-//Allow serial output through usartWriteLine() etc.
-//Set to NO to get silent boot.
-#define SERIAL_OUTPUT YES
 
 /***********************************************************
  * Push Button GPIO configures
@@ -187,30 +190,38 @@
 /***********************************************************
  * USART configures
  **********************************************************/
+//Allow serial output through usartWriteLine() etc.
+//Set to NO to get silent boot.
+#define SERIAL_OUTPUT YES
+
 #define CONFIG_USART0 YES
-#define CONFIG_USART1 YES
+#define CONFIG_USART1 NO
 #define CONFIG_USART2 NO
 #define CONFIG_USART3 NO
 
-//~ #if(CONFIG_USART0)
+#define DEFAULT_BAUDRATE 115200
+
+#if(CONFIG_USART0 == YES)
 #define USART0              (&AVR32_USART0)
-#define USART0_BAUDRATE     115200	//57600
+#define USART0_BAUDRATE     DEFAULT_BAUDRATE //115200
 #define USART0_CHARLEN      8
 #define USART0_RX_PIN       AVR32_USART0_RXD_0_0_PIN
 #define USART0_RX_FUNCTION  AVR32_USART0_RXD_0_0_FUNCTION
 #define USART0_TX_PIN       AVR32_USART0_TXD_0_0_PIN
 #define USART0_TX_FUNCTION  AVR32_USART0_TXD_0_0_FUNCTION
-//~ #endif
+#endif
 
-//~ #if(CONFIG_USART1)
+#if(CONFIG_USART1 == YES)
 #define USART1              (&AVR32_USART1)
-#define USART1_BAUDRATE     115200	//57600
+#define USART1_BAUDRATE     DEFAULT_BAUDRATE //115200
 #define USART1_CHARLEN      8
 #define USART1_RX_PIN       AVR32_USART1_RXD_0_0_PIN
 #define USART1_RX_FUNCTION  AVR32_USART1_RXD_0_0_FUNCTION
 #define USART1_TX_PIN       AVR32_USART1_TXD_0_0_PIN
 #define USART1_TX_FUNCTION  AVR32_USART1_TXD_0_0_FUNCTION
-//~ #endif
+#endif
+
+#define CONFIG_EMBLOD_USART USART0
 
 /***********************************************************
  * Task default priority configures

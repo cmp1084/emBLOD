@@ -31,7 +31,7 @@
 #define _USART_H_
 
 #include <avr32/io.h>
-#include "system/irq.h"
+#include "cpu/irq.h"
 #include "emblod_config.h"
 
 #define USART_NO_RX_CHAR 0
@@ -73,6 +73,7 @@ typedef struct
 	unsigned int tx_pin;
 } usart_options_t;
 
+#if CONFIG_USART0 == YES
 static const usart_options_t usart0_options = {
 	.baudrate    = USART0_BAUDRATE,
 	.charlength  = USART0_CHARLEN,
@@ -82,7 +83,9 @@ static const usart_options_t usart0_options = {
 	.rx_pin      = USART0_RX_PIN,
 	.tx_pin      = USART0_TX_PIN
 };
+#endif
 
+#if CONFIG_USART1 == YES
 static const usart_options_t usart1_options = {
 	.baudrate    = USART1_BAUDRATE,
 	.charlength  = USART1_CHARLEN,
@@ -92,7 +95,31 @@ static const usart_options_t usart1_options = {
 	.rx_pin      = USART1_RX_PIN,
 	.tx_pin      = USART1_TX_PIN
 };
+#endif
 
+#if CONFIG_USART2 == YES
+static const usart_options_t usart2_options = {
+	.baudrate    = USART2_BAUDRATE,
+	.charlength  = USART2_CHARLEN,
+	.paritytype  = USART_NO_PARITY,
+	.stopbits    = USART_1_STOPBIT,
+	.channelmode = USART_NORMAL_CHMODE,
+	.rx_pin      = USART2_RX_PIN,
+	.tx_pin      = USART2_TX_PIN
+};
+#endif
+
+#if CONFIG_USART3 == YES
+static const usart_options_t usart3_options = {
+	.baudrate    = USART3_BAUDRATE,
+	.charlength  = USART3_CHARLEN,
+	.paritytype  = USART_NO_PARITY,
+	.stopbits    = USART_1_STOPBIT,
+	.channelmode = USART_NORMAL_CHMODE,
+	.rx_pin      = USART3_RX_PIN,
+	.tx_pin      = USART3_TX_PIN
+};
+#endif
 
 void usartReset(volatile avr32_usart_t *usart);
 int usartSetBaudrate(volatile avr32_usart_t *usart, unsigned int baudrate, unsigned long pba_hz);

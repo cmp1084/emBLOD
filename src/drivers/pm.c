@@ -31,7 +31,7 @@
 
 unsigned int get_hsb_clk_rate(void)
 {
-	return FCPU;
+	return FCPU; //TODO: Fix
 }
 
 void pmPbaMaskSet(unsigned int mask)
@@ -72,6 +72,38 @@ unsigned int pmPbbMaskGet(void)
 //  12    9   1  120     1     60    30
 //  12   10   1  132     1     66    16.5
 void pmClkInit(unsigned int fcpu, unsigned int fpba)
+{
+	volatile avr32_pm_t * pm = &AVR32_PM;
+	volatile avr32_flashc_t * flashc = &AVR32_FLASHC;
+
+	//Kill the watchdog
+	wdtDisable();
+
+	//Set up PLL0
+	pm->pll[0] = (0x01 << AVR32_PM_PLLEN_OFFSET)
+				|(0x01 << AVR32_PM_PLLDIV_OFFSET)
+				|((0x0a - 0x01) << AVR32_PM_PLLMUL_OFFSET)
+				|(0x02 << AVR32_PM_PLL0_PLLOPT_OFFSET)
+				|(0x10 << AVR32_PM_PLLCOUNT_OFFSET)
+				|(0x01 << 0x07);	//Errata rev. E, we should not need it for the rev. K chip.
+
+	//Wait for lock and stabilisation
+	while(!(pm->poscsr) & (1 << AVR32_PM_LOCK0_OFFSET));
+	while(!(pm->poscsr) & (1 << AVR32_PM_CKRDY_OFFSET));
+
+	//Set up clock for all peripheral busses and CPU
+	pm->cksel =  (1 << AVR32_PM_CKSEL_PBADIV_OFFSET)
+				|(1 << AVR32_PM_CKSEL_PBASEL_OFFSET);
+
+	//Set flash WaitState to 1 cycle
+	flashc->fcr |= 1 << AVR32_FLASHC_FCR_FWS_OFFSET;
+
+	//Switch to PLL0
+	pm->mcctrl = (AVR32_PM_MCCTRL_MCSEL_PLL0 << AVR32_PM_MCCTRL_MCSEL_OFFSET)
+				|(1 << AVR32_PM_MCCTRL_OSC0EN_OFFSET);
+}
+
+void pmClkReInit(unsigned int fcpu, unsigned int fpba)
 {
 	volatile avr32_pm_t * pm = &AVR32_PM;
 	volatile avr32_flashc_t * flashc = &AVR32_FLASHC;

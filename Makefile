@@ -28,13 +28,14 @@
 #*****************************************************************************
 # Tab size: 4
 
+export
 
 ##############################################################
 #The target board
 ##############################################################
 #The default board is Mizar32. Compilation for another board can be done
-	#with, e.g.:
-	#    make BOARD=EVK1100
+#with, e.g.:
+#    make BOARD=EVK1100
 ifndef $(BOARD)
 	BOARD = MIZAR32
 endif
@@ -56,6 +57,7 @@ endif
 #Binaries are located in this dir
 ##############################################################
 BINDIR = bin
+#TODO: Put in bin
 ELFDIR = .
 
 
@@ -166,7 +168,7 @@ OPT = s
 AFLAGS = -x assembler-with-cpp
 
 CFLAGS = -c
-CFLAGS += -mpart=$(PART) -D$(BOARD)
+CFLAGS += -mpart=$(PART) -D$(BOARD) -DBOARD=$(BOARD)
 CFLAGS += $(DEBUG) -DO$(OPT)
 CFLAGS += -Wall -Wa,-R
 CFLAGS += $(INCDIRS)
@@ -239,12 +241,6 @@ makeSureWeAlwaysLink:
 
 #TODO: delay_ms should be fixed up nice, until then, dont optimize the delay_ms function in src/drivers/delay.c
 $(BUILDDIR)/$(DRIVERSDIR)/delay.o: $(DRIVERSDIR)/delay.c
-	$(TEXTPRECOMPILE) with -O0
-	@$(TEST) -d $(BUILDDIR)/$(@D) || $(MKDIR) $(BUILDDIR)/$(@D)
-	@$(CC) $(CFLAGS) -O0 $< -o$(BUILDDIR)/$@
-	$(TEXTPOSTCOMPILE)
-
-$(BUILDDIR)/$(DRIVERSDIR)/sdrabmc.o: $(DRIVERSDIR)/sdramc.c
 	$(TEXTPRECOMPILE) with -O0
 	@$(TEST) -d $(BUILDDIR)/$(@D) || $(MKDIR) $(BUILDDIR)/$(@D)
 	@$(CC) $(CFLAGS) -O0 $< -o$(BUILDDIR)/$@

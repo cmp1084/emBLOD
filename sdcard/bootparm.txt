@@ -24,8 +24,11 @@
 #
 ###############################################################################
 
+#This is a future parameter, will be ignored now.
+bootorder = sdcard usart0 eth0 eeprom punsh_card internal flash
+
 #This bootfile is read from SD-card.
- bootfile = emu06015.bin
+bootfile = emu06015.bin
 
 #This banner file is optional. If it exist, it will be shown on serial terminal
 banner = banner2.txt
@@ -34,13 +37,14 @@ banner = banner2.txt
 #starting execution of the loaded program.
 bootdelay = 0
 
-#DONT USE YET. #Default baudrate is 115200
-#DONT USE YET. baudrate = 57600
-#DONT USE YET. #The frequency of the CPU and PBA
+#Default baudrate is 115200
+baudrate = 57600
+#The frequency of the CPU and PBA
 #DONT USE YET. #fcpu = 60000000
 #DONT USE YET. #fpba = 15000000
 
 #Load and boot address
+#On Mizar32 the range 0xd0000000-0xd1ffffff is legal
 loadaddr = 0xd0000000
 bootaddr = 0xD0000000
 
@@ -48,5 +52,5 @@ bootaddr = 0xD0000000
 #issue = warning :)
 
 #parameters without a value (no '=' sign) will mess the bootloader up.
-#badparam: auch!
+badparam: auch! :(
 #

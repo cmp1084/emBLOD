@@ -36,10 +36,10 @@
  * System interrupt handling functions
  ***********************************************************/
 //Disable interrupts
-extern void interruptDisable(void);
+extern volatile void interruptDisable(void);
 
 //Enable interrupts
-extern void interruptEnable(void);
+extern volatile void interruptEnable(void);
 
 //Check if interrupts are enabled.
 extern int isInterruptEnabled(void);

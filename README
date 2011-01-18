@@ -25,7 +25,16 @@ The License for simpleBLOD is found in the file COPYING.
 Introduction
 ===============
 BLOD is a bootloader for AVR32 devices. Bootloading is done from SD(HC) memory
-card.
+card. By default a file named autorun.bin will be booted, but this can be
+controlled by the boot parameters in the file bootparm.txt.
+
+
+Affected GPIO's
+=================
+The GPIO pins used for USART, SPI etc is set up in emblod_config.h
+emBLOD toggle GPIO_PB29 during SD card access. GPIO_PB29 is connected to a LED
+on Mizar32 and EVK1100.
+
 
 Boot parameters
 =================
@@ -35,23 +44,28 @@ bootloader will try to load autorun.bin with default parameters.
 If nothing is available to load the bootloader complains and give up.
 
 Possible boot parameters:
-banner - A banner can optinally be displayed. The file given here contain the ASCII-art.
-baudrate - The baudrate for the serial port.
-bootfile - The filename to load
-bootdelay - If, for some reason, a pause between loading the bootfile and start running the loaded code is wanted, a value in seconds can be given.
-loadaddr - The bootfile will be loaded to this address.
-bootaddr - When the bootloader is done, execution continue at this address.
-fcpu - The frequency of the CPU that the bootloader will turn over to the loaded program.
-fpba - The frequency of the PBA bus that the bootloader will turn over to the loaded program.
+banner    - A banner can optinally be displayed.
+baudrate  - The baudrate for the serial port.
+bootfile  - The filename to load
+bootdelay - If, for some reason, a pause between loading the bootfile and start
+            running the loaded code is wanted, a value in seconds can be given.
+loadaddr  - The bootfile will be loaded to this address.
+bootaddr  - When the bootloader is done, execution continue at this address.
+fcpu      - The frequency of the CPU that the bootloader will turn over to the
+            loaded program.
+fpba      - The frequency of the PBA bus that the bootloader will turn over to the
+            loaded program.
 
 
 Compiling
 ==========
 BLOD will compile by typing:
+	make clean
 	make
 in the directory containing the Makefile.
 The default compilation is for Mizar32
 Compiling for EVK1100 is done by typing:
+	make clean
 	make BOARD=EVK1100
 
 Programming EVK1100/Mizar32

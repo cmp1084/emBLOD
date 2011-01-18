@@ -62,7 +62,7 @@ enum {
 };
 
 
-unsigned int get_hsb_clk_rate(void);
+unsigned int get_hsb_clk_rate(void);	//TODO: Fix
 //~ void pmCpuMaskSet(unsigned int mask);
 //~ unsigned int pmCpuMaskGet(void);
 void         pmHsbMaskSet(unsigned int mask);

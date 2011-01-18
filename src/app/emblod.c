@@ -28,10 +28,11 @@
 //TODO: This is a hack. Revisit.
 
 #include "app/emblod.h"
+enum { ERR = -2, EOF = -1 };
 
 //~ __attribute__((section(".data")))
 unsigned int chreadpos = 0;
-__attribute__((section(".data")))
+//__attribute__((section(".data")))
 UINT br = 0;
 
 void warning(const char * msg)
@@ -300,8 +301,6 @@ bootparam_t bootparamLoad(char * filename)
 			usartWriteLine(USART0, " = ");
 			usartWriteLine(USART0, value);
 			usartWriteLine(USART0, "\n");
-			while(1);
-			 //This is evil, should not be done! Rework
 		}
 	}
 
@@ -452,7 +451,12 @@ int boot(bootparam_t * bootparam)
 	}
 
 	usartWriteLine(USART0, "\nStarting...\n");
-	interruptDisable();
+
+	//Reset used peripherials before turning control over to the loaded program.
+	spiReset(&AVR32_SPI1);
+	usartReset(USART0);
+
+	//~ interruptDisable();	//It is never turned on.
 	asm("icall %0" : : "r"(bootparam->bootaddr));
 	return 0;
 }

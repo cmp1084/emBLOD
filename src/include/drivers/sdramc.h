@@ -34,7 +34,7 @@
 #include "drivers/usart.h"
 #include "drivers/pm.h"
 
-unsigned long sdramInit(void);
+unsigned long sdramInit(unsigned int fcpu);
 
 #define SDRAM_BASE 0xd0000000
 #define GPIO_BASE 0xffff1000

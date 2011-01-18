@@ -141,13 +141,13 @@
 void sdramPurge(void)
 {
 	int * sdram = (int *)SDRAM_BASE;
-	int nrOfBytesToPurge = 0x20000;
-	while(nrOfBytesToPurge--) {
-		sdram[nrOfBytesToPurge] = 0xbadb17c4;
+	int nrOfWordsToPurge = 0x2000000/4;
+	while(nrOfWordsToPurge--) {
+		sdram[nrOfWordsToPurge] = 0xbadb17c4;
 	}
 }
 
-unsigned long sdramInit(void)
+unsigned long sdramInit(unsigned int fcpu)
 {
 	//~ volatile avr32_hmatrix_t * hmatrix = (void *) 0xfffe1000;
 	//~ volatile avr32_sdramc_t * sdramc = (void *) 0xfffe2000;
@@ -215,7 +215,7 @@ unsigned long sdramInit(void)
 		(1 << (109 - 96)),
 		FUNC_A);
 
-	hsb_hz = get_hsb_clk_rate();
+	hsb_hz = fcpu;			//get_hsb_clk_rate();
 	hsb_mhz_dn = hsb_hz / 1000000;
 	hsb_mhz_up = (hsb_hz + 999999) / 1000000;
 
@@ -319,6 +319,6 @@ unsigned long sdramInit(void)
 		//~ .bank_bits = 2,
 		sdram_size = 1 << (13 + 9 + 2 + 1);    //row_bits + col_bits_bank_bits + 1
 
-	sdramPurge();	//TODO: Remove
+	sdramPurge();	//TODO: Remove, but keep as long as possible
 	return sdram_size;
 }

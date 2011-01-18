@@ -39,12 +39,12 @@ unsigned char * sdhcSectorBuf = &sdhcBuf[4];
 
 void sdhcSendSpiBlock(unsigned char * buf, unsigned short len)
 {
-	ledOn(LED0_GPIO);				//Not neccesary but can be nice.
+	//~ ledOn(SPI_ACTIVITY_LED);				//Not neccesary but can be nice.
 	while(len--) {
 		spiWriteByte(SD_SPI, *buf);
 		buf++;
 	}
-	ledOff(LED0_GPIO);
+	//~ ledOff(SPI_ACTIVITY_LED);
 }
 
 
