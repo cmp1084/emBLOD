@@ -246,7 +246,7 @@ $(BUILDDIR)/$(DRIVERSDIR)/delay.o: $(DRIVERSDIR)/delay.c
 	@$(CC) $(CFLAGS) -O0 $< -o$(BUILDDIR)/$@
 	$(TEXTPOSTCOMPILE)
 
-#~ $(BUILDDIR)/$(DRIVERSDIR)/__removed__sddamc.o: $(DRIVERSDIR)/sdramc.c
+#~ $(BUILDDIR)/$(DRIVERSDIR)/__removed__sdramc.o: $(DRIVERSDIR)/sdramc.c
 	#~ $(TEXTPRECOMPILE) with -O0
 	#~ @$(TEST) -d $(BUILDDIR)/$(@D) || $(MKDIR) $(BUILDDIR)/$(@D)
 	#~ @$(CC) $(CFLAGS) -O0 $< -o$(BUILDDIR)/$@

@@ -155,7 +155,7 @@ volatile unsigned long sdramInit(unsigned int fcpu)
 	//~ void * sdram_base = (void *) 0xd0000000;
 	volatile avr32_hmatrix_t * hmatrix = &AVR32_HMATRIX;
 	volatile avr32_sdramc_t * sdramc = &AVR32_SDRAMC;
-	void * sdram_base = (void *) SDRAM_BASE;
+	volatile void * sdram_base = (void *) SDRAM_BASE;
 	//~ const struct sdram_config * config = &sdramconfig;
 
 	unsigned int sdram_size;
@@ -164,7 +164,7 @@ volatile unsigned long sdramInit(unsigned int fcpu)
 	unsigned long hsb_mhz_dn;
 	unsigned long hsb_mhz_up;
 	unsigned long i;
-	unsigned int dummyread;
+	volatile unsigned int dummyread;
 
 	gpioPeripheralEnableMultiPin(PORTMUX_PORT_B,
 		(1 << (42-32)) |

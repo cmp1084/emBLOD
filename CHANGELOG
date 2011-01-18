@@ -28,6 +28,11 @@
 
 emBLOD Changelog
 --------------------------
+Version 0.1.5
+20110118
+Fixed init problems with SDRAM.
+
+
 Version 0.1.4
 20110114
 Changed name of the project, previously eLuaBLOD, now emBLOD
