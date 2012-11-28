@@ -19,12 +19,12 @@ Content:
 
 License
 ==========
-The License for simpleBLOD is found in the file COPYING.
+The License for emBLOD is found in the file COPYING.
 
 
 Introduction
 ===============
-BLOD is a bootloader for AVR32 devices. Bootloading is done from SD(HC) memory
+emBLOD is a bootloader for AVR32 devices. Bootloading is done from SD(HC) memory
 card. By default a file named autorun.bin will be booted, but this can be
 controlled by the boot parameters in the file bootparm.txt.
 
@@ -59,7 +59,7 @@ fpba      - The frequency of the PBA bus that the bootloader will turn over to t
 
 Compiling
 ==========
-BLOD will compile by typing:
+emBLOD will compile by typing:
 	make clean
 	make
 in the directory containing the Makefile.
@@ -72,7 +72,7 @@ Programming EVK1100/Mizar32
 ===========================
 Typing:
 	make program
-will program the binary to the chip.
+will program the binary to the flash memory of the chip.
 
 
 
